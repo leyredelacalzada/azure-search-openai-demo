@@ -477,12 +477,14 @@ class Approach(ABC):
             )
 
         if use_sharepoint_source:
+            # Use SearchIndexKnowledgeSourceParams instead of RemoteSharePointKnowledgeSourceParams
+            # because we're using a pre-indexed SharePoint index, not native SharePoint integration
             knowledge_source_params_list.append(
-                RemoteSharePointKnowledgeSourceParams(
-                    knowledge_source_name="sharepoint",
+                SearchIndexKnowledgeSourceParams(
+                    knowledge_source_name="marketingsharepoint",
                     include_references=True,
                     include_reference_source_data=True,
-                    always_query_source=False,
+                    always_query_source=True,  # Force query to ensure SharePoint content is retrieved
                 )
             )
 
