@@ -18,6 +18,7 @@ from azure.cognitiveservices.speech import (
 )
 from azure.identity.aio import (
     AzureDeveloperCliCredential,
+    DefaultAzureCredential,
     ManagedIdentityCredential,
     get_bearer_token_provider,
 )
@@ -474,7 +475,7 @@ async def setup_clients():
     # Use the current user identity for keyless authentication to Azure services.
     # This assumes you use 'azd auth login' locally, and managed identity when deployed on Azure.
     # The managed identity is setup in the infra/ folder.
-    azure_credential: AzureDeveloperCliCredential | ManagedIdentityCredential
+    azure_credential: DefaultAzureCredential | ManagedIdentityCredential
     azure_ai_token_provider: Callable[[], Awaitable[str]]
     if RUNNING_ON_AZURE:
         current_app.logger.info("Setting up Azure credential using ManagedIdentityCredential")
@@ -488,14 +489,9 @@ async def setup_clients():
         else:
             current_app.logger.info("Setting up Azure credential using ManagedIdentityCredential")
             azure_credential = ManagedIdentityCredential()
-    elif AZURE_TENANT_ID:
-        current_app.logger.info(
-            "Setting up Azure credential using AzureDeveloperCliCredential with tenant_id %s", AZURE_TENANT_ID
-        )
-        azure_credential = AzureDeveloperCliCredential(tenant_id=AZURE_TENANT_ID, process_timeout=60)
     else:
-        current_app.logger.info("Setting up Azure credential using AzureDeveloperCliCredential for home tenant")
-        azure_credential = AzureDeveloperCliCredential(process_timeout=60)
+        current_app.logger.info("Setting up Azure credential using DefaultAzureCredential")
+        azure_credential = DefaultAzureCredential(exclude_shared_token_cache_credential=True)
     azure_ai_token_provider = get_bearer_token_provider(
         azure_credential, "https://cognitiveservices.azure.com/.default"
     )
