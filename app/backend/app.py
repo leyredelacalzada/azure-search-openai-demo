@@ -523,13 +523,13 @@ async def setup_clients():
         if USE_SHAREPOINT_SOURCE:
             knowledgebase_client_with_sharepoint = KnowledgeBaseRetrievalClient(
                 endpoint=AZURE_SEARCH_ENDPOINT,
-                knowledge_base_name=f"{AZURE_SEARCH_KNOWLEDGEBASE_NAME}-with-mktsp",
+                knowledge_base_name=f"{AZURE_SEARCH_KNOWLEDGEBASE_NAME}-with-hrsp",
                 credential=azure_credential,
             )
         if USE_WEB_SOURCE and USE_SHAREPOINT_SOURCE:
             knowledgebase_client_with_web_and_sharepoint = KnowledgeBaseRetrievalClient(
                 endpoint=AZURE_SEARCH_ENDPOINT,
-                knowledge_base_name=f"{AZURE_SEARCH_KNOWLEDGEBASE_NAME}-with-web-and-mktsp",
+                knowledge_base_name=f"{AZURE_SEARCH_KNOWLEDGEBASE_NAME}-with-web-and-hrsp",
                 credential=azure_credential,
             )
 

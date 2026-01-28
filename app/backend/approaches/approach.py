@@ -457,7 +457,7 @@ class Approach(ABC):
                 filter_add_on=filter_add_on,
                 include_references=True,
                 include_reference_source_data=True,
-                always_query_source=False,
+                always_query_source=True,  # Always query gptkbindex for internal data
                 reranker_threshold=minimum_reranker_score,
             )
         ]
@@ -481,7 +481,7 @@ class Approach(ABC):
             # because we're using a pre-indexed SharePoint index, not native SharePoint integration
             knowledge_source_params_list.append(
                 SearchIndexKnowledgeSourceParams(
-                    knowledge_source_name="marketingsharepoint",
+                    knowledge_source_name="hrsharepoint",
                     include_references=True,
                     include_reference_source_data=True,
                     always_query_source=True,  # Force query to ensure SharePoint content is retrieved
