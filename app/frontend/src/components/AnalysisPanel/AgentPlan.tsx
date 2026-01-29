@@ -121,8 +121,13 @@ export const AgentPlan: React.FC<Props> = ({ queryPlan, onEffortExtracted, onCit
         const stepQuery = getStepQuery(step);
         if (!stepQuery) return [];
 
-        // Filter by both query and step type, then de-duplicate by filename
-        const filtered = results.filter(result => result.activity?.query === stepQuery && result.type == step.type);
+        // Filter by query, step type, AND knowledge source name, then de-duplicate by filename
+        const filtered = results.filter(
+            result =>
+                result.activity?.query === stepQuery &&
+                result.type == step.type &&
+                (!step.knowledge_source_name || result.activity?.source === step.knowledge_source_name)
+        );
         const uniqueMap = new Map(filtered.map(r => [r.sourcepage || r.web_url || r.url, r]));
         return Array.from(uniqueMap.values());
     };
